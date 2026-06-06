@@ -43,6 +43,18 @@ axios.interceptors.response.use((response) => {
   return response;
 });
 
+/* ================================
+   PROGRESS BAR
+================================ */
+function updateProgress(progressEvent) {
+  if (progressEvent.total) {
+    const percent =
+      (progressEvent.loaded / progressEvent.total) * 100;
+
+    progressBar.style.width = `${percent}%`;
+  }
+}
+
 /**
  * 1. Create an async function "initialLoad" that does the following:
  * - Retrieve a list of breeds from the cat API using fetch().
