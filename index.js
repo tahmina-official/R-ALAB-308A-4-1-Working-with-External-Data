@@ -155,22 +155,37 @@ export async function favourite(imgId) {
   }
 }
 
-/**
- * 9. Test your favourite() function by creating a getFavourites() function.
- * - Use Axios to get all of your favourites from the cat API.
- * - Clear the carousel and display your favourites when the button is clicked.
- *  - You will have to bind this event listener to getFavouritesBtn yourself.
- *  - Hint: you already have all of the logic built for building a carousel.
- *    If that isn't in its own function, maybe it should be so you don't have to
- *    repeat yourself in this section.
- */
+/* ================================
+   GET FAVOURITES
+================================ */
+async function getFavourites() {
+  try {
+    const res = await axios.get("/favourites");
 
-/**
- * 10. Test your site, thoroughly!
- * - What happens when you try to load the Malayan breed?
- *  - If this is working, good job! If not, look for the reason why and fix it!
- * - Test other breeds as well. Not every breed has the same data available, so
- *   your code should account for this.
- */
+    Carousel.clear();
 
+    res.data.forEach((fav) => {
+      const item = Carousel.createCarouselItem(
+        fav.image.url,
+        "Favourite Cat",
+        fav.image_id
+      );
+
+      Carousel.appendCarousel(item);
+    });
+
+    Carousel.start();
+
+    infoDump.innerHTML = "<h2>❤️ My Favourites</h2>";
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+getFavouritesBtn.addEventListener("click", getFavourites);
+
+/* ================================
+   START APP
+================================ */
 initialLoad();
