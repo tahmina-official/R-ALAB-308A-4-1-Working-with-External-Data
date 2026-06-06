@@ -1,1 +1,4 @@
+# .gitignore only protects:
+# what gets pushed to GitHub
+
 keys.js
