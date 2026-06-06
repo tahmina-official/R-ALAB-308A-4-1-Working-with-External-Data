@@ -11,6 +11,7 @@ const progressBar = document.getElementById("progressBar");
 // The get favourites button element.
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 
+
 // Step 0: Store your API key in the keys.js file.
 
 // AXIOS SETUP
