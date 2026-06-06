@@ -17,6 +17,32 @@ const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 axios.defaults.baseURL = "https://api.thecatapi.com/v1";
 axios.defaults.headers.common["x-api-key"] = API_KEY;
 
+/* ================================
+   INTERCEPTORS (ONLY ONCE)
+================================ */
+axios.interceptors.request.use((config) => {
+  console.log("Request started");
+
+  config.metadata = { startTime: new Date() };
+
+  progressBar.style.width = "0%";
+  document.body.style.cursor = "progress";
+
+  return config;
+});
+
+axios.interceptors.response.use((response) => {
+  const duration =
+    new Date() - response.config.metadata.startTime;
+
+  console.log(`Request took ${duration} ms`);
+
+  progressBar.style.width = "100%";
+  document.body.style.cursor = "default";
+
+  return response;
+});
+
 /**
  * 1. Create an async function "initialLoad" that does the following:
  * - Retrieve a list of breeds from the cat API using fetch().
