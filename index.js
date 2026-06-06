@@ -83,6 +83,51 @@ async function initialLoad() {
   }
 }
 
+/* ================================
+   LOAD IMAGES FUNCTION
+================================ */
+async function loadBreedImages(breedId) {
+  try {
+    const response = await axios.get("/images/search", {
+      params: {
+        breed_ids: breedId,
+        limit: 10
+      },
+      onDownloadProgress: updateProgress
+    });
+
+    const images = response.data;
+
+    Carousel.clear();
+
+    images.forEach((img) => {
+      const item = Carousel.createCarouselItem(
+        img.url,
+        img.breeds?.[0]?.name || "Cat",
+        img.id
+      );
+
+      Carousel.appendCarousel(item);
+    });
+
+    Carousel.start();
+
+    if (images[0]?.breeds?.length) {
+      const breed = images[0].breeds[0];
+
+      infoDump.innerHTML = `
+        <h2>${breed.name}</h2>
+        <p>${breed.description || ""}</p>
+        <p><b>Origin:</b> ${breed.origin}</p>
+        <p><b>Temperament:</b> ${breed.temperament}</p>
+      `;
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 /**
  * 2. Create an event handler for breedSelect that does the following:
  * - Retrieve information on the selected breed from the cat API using fetch().
@@ -97,6 +142,8 @@ async function initialLoad() {
  * - Each new selection should clear, re-populate, and restart the Carousel.
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
+
+
 
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
