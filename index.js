@@ -64,6 +64,25 @@ function updateProgress(progressEvent) {
  * This function should execute immediately.
  */
 
+async function initialLoad() {
+  try {
+    const response = await axios.get("/breeds");
+
+    response.data.forEach((breed) => {
+      const option = document.createElement("option");
+      option.value = breed.id;
+      option.textContent = breed.name;
+      breedSelect.appendChild(option);
+    });
+
+    if (breedSelect.value) {
+      loadBreedImages(breedSelect.value);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 /**
  * 2. Create an event handler for breedSelect that does the following:
  * - Retrieve information on the selected breed from the cat API using fetch().
@@ -151,3 +170,5 @@ export async function favourite(imgId) {
  * - Test other breeds as well. Not every breed has the same data available, so
  *   your code should account for this.
  */
+
+initialLoad();
